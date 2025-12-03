@@ -1,0 +1,22 @@
+ # --- 3. الرسم البياني: الغياب حسب الطالب ---
+    if not filtered_df.empty:
+        absence_by_student = filtered_df["الاسم"].value_counts().reset_index()
+        absence_by_student.columns = ["الطالب", "عدد الغياب"]
+        # عرض أعلى 10 طلاب فقط لتجنب الازدحام
+        absence_by_student = absence_by_student.head(10)
+        
+        fig_student = px.bar(
+            absence_by_student, x="الطالب", y="عدد الغياب",
+            title="أكثر الطلاب غياباً (أعلى 10)",
+            text="عدد الغياب",
+            color="عدد الغياب",
+            color_continuous_scale="Reds"
+        )
+        fig_student.update_layout(template="simple_white", xaxis_title="اسم الطالب", yaxis_title="العدد")
+    else:
+        fig_student = px.bar(title="لا توجد بيانات")
+
+    return cards, fig_date, fig_student
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
