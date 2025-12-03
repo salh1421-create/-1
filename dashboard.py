@@ -189,5 +189,6 @@ def update_dashboard(selected_grade, selected_class, n):
     return cards, fig_date, fig_student
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
+    # تم تغيير debug=True إلى debug=False لحل مشاكل تضارب الإشارات (Signal conflict)
+    # في بيئات التشغيل المعزولة، مما يتسبب في ظهور ValueError.
+    app.run(debug=False)
