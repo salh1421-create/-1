@@ -36,41 +36,44 @@ def load_data():
         return pd.DataFrame()
 
 # تخطيط الصفحة (Layout)
-app.layout = dbc.Container([
-    # 1. العنوان الرئيسي
-    dbc.Row([
-        dbc.Col(html.H1("لوحة متابعة الغياب اليومية", className="text-center text-primary mb-4"), width=12)
-    ], className="mt-4"),
+# تم إصلاح الخطأ: تم لف dbc.Container داخل html.Div لتمرير dir="rtl" بأمان.
+app.layout = html.Div([ 
+    dbc.Container([
+        # 1. العنوان الرئيسي
+        dbc.Row([
+            dbc.Col(html.H1("لوحة متابعة الغياب اليومية", className="text-center text-primary mb-4"), width=12)
+        ], className="mt-4"),
 
-    # 2. فلاتر البحث (الصف والفصل)
-    dbc.Row([
-        dbc.Col([
-            html.Label("اختر الصف:", className="fw-bold"),
-            dcc.Dropdown(id="grade-dropdown", clearable=False, className="mb-2")
-        ], width=12, md=6),
-        
-        dbc.Col([
-            html.Label("اختر الفصل:", className="fw-bold"),
-            dcc.Dropdown(id="class-dropdown", clearable=False, className="mb-2")
-        ], width=12, md=6),
-    ], className="mb-4"),
+        # 2. فلاتر البحث (الصف والفصل)
+        dbc.Row([
+            dbc.Col([
+                html.Label("اختر الصف:", className="fw-bold"),
+                dcc.Dropdown(id="grade-dropdown", clearable=False, className="mb-2")
+            ], width=12, md=6),
+            
+            dbc.Col([
+                html.Label("اختر الفصل:", className="fw-bold"),
+                dcc.Dropdown(id="class-dropdown", clearable=False, className="mb-2")
+            ], width=12, md=6),
+        ], className="mb-4"),
 
-    # 3. بطاقات المؤشرات (KPIs)
-    dbc.Row(id="kpi-cards", className="mb-4"),
+        # 3. بطاقات المؤشرات (KPIs)
+        dbc.Row(id="kpi-cards", className="mb-4"),
 
-    # 4. الرسوم البيانية
-    dbc.Row([
-        dbc.Col(dcc.Graph(id="absence-by-date"), width=12, lg=6),
-        dbc.Col(dcc.Graph(id="absence-by-student"), width=12, lg=6),
-    ]),
+        # 4. الرسوم البيانية
+        dbc.Row([
+            dbc.Col(dcc.Graph(id="absence-by-date"), width=12, lg=6),
+            dbc.Col(dcc.Graph(id="absence-by-student"), width=12, lg=6),
+        ]),
 
-    # مكوّن التحديث التلقائي (كل 60 ثانية)
-    dcc.Interval(
-        id="interval-component",
-        interval=60*1000, 
-        n_intervals=0
-    )
-], fluid=True, dir="rtl") # dir="rtl" مهم جداً لدعم العربية
+        # مكوّن التحديث التلقائي (كل 60 ثانية)
+        dcc.Interval(
+            id="interval-component",
+            interval=60*1000, 
+            n_intervals=0
+        )
+    ], fluid=True) # تم إزالة dir="rtl" من هنا
+], dir="rtl") # dir="rtl" تم وضعه على الـ html.Div الخارجي
 
 # --- Callbacks ---
 
